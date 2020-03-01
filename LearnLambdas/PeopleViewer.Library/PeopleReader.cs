@@ -4,7 +4,7 @@ using System.ComponentModel;
 
 namespace PeopleViewer.Library
 {
-    public class PeopleRepository
+    public class PeopleReader
     {
         public void GetPeopleAsync()
         {

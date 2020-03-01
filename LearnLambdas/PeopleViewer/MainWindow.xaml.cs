@@ -15,17 +15,18 @@ namespace PeopleViewer
         private void RefreshButton_Click(object sender, RoutedEventArgs e)
         {
             Person selectedPerson = PersonListBox.SelectedItem as Person;
-            var repository = new PeopleRepository();
-            repository.GetPeopleCompleted += (repoSender, repoArgs) =>
+
+            var repository = new PeopleReader();
+            repository.GetPeopleCompleted += (s, a) =>
                 {
-                    PersonListBox.ItemsSource = ApplySort(ApplyFilters(repoArgs.Result));
-                    if (selectedPerson != null)
-                        PersonListBox.SelectedItem =
-                            PersonListBox.Items.OfType<Person>().FirstOrDefault(
-                                p => p.Id == selectedPerson.Id);
+                    PersonListBox.ItemsSource = ApplySort(ApplyFilters(a.Result));
+
+                    PersonListBox.SelectedItem = 
+                        PersonListBox.Items.OfType<Person>()
+                            .FirstOrDefault(p => p.Id == selectedPerson?.Id);
                 };
-            repository.GetPeopleAsync();
             //selectedPerson = null;
+            repository.GetPeopleAsync();
         }
 
         private IEnumerable<Person> ApplyFilters(IEnumerable<Person> data)
@@ -35,7 +36,7 @@ namespace PeopleViewer
 
             if (DateFilterCheckBox.IsChecked.Value)
                 data = data.Where(p => p.StartDate.Year >= startYear)
-                    .Where(p => p.StartDate.Year <= endYear);
+                        .Where(p => p.StartDate.Year <= endYear);
 
             if (NameFilterCheckBox.IsChecked.Value)
                 data = data.Where(p => p.GivenName == NameTextBox.Text);

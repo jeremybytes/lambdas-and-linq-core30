@@ -153,7 +153,7 @@ namespace PeopleViewer
 
         public void RefreshData()
         {
-            var repository = new PeopleRepository();
+            var repository = new PeopleReader();
             repository.GetPeopleCompleted += (s, e) =>
             {
                 cachedPeople = e.Result;
@@ -209,19 +209,9 @@ namespace PeopleViewer
         #region INotifyPropertyChanged Members
 
         public event PropertyChangedEventHandler PropertyChanged;
-        private void RaisePropertyChanged(string propertyName)
+        private void RaisePropertyChanged(string propertyName = null)
         {
-            if (PropertyChanged != null)
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        private void RaisePropertyChanged()
-        {
-            if (PropertyChanged != null)
-            {
-                foreach(var property in this.GetType().GetProperties().Where(p => !p.IsSpecialName))
-                    PropertyChanged(this, new PropertyChangedEventArgs(property.Name));
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion
