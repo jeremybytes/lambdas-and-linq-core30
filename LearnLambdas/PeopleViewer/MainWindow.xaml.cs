@@ -16,8 +16,8 @@ namespace PeopleViewer
         {
             Person selectedPerson = PersonListBox.SelectedItem as Person;
 
-            var repository = new PeopleReader();
-            repository.GetPeopleCompleted += (s, a) =>
+            var reader = new PeopleReader();
+            reader.GetPeopleCompleted += (s, a) =>
                 {
                     PersonListBox.ItemsSource = ApplySort(ApplyFilters(a.Result));
 
@@ -26,7 +26,7 @@ namespace PeopleViewer
                             .FirstOrDefault(p => p.Id == selectedPerson?.Id);
                 };
             //selectedPerson = null;
-            repository.GetPeopleAsync();
+            reader.GetPeopleAsync();
         }
 
         private IEnumerable<Person> ApplyFilters(IEnumerable<Person> data)
@@ -61,7 +61,7 @@ namespace PeopleViewer
             return data.OrderBy(p => p.FamilyName);
         }
 
-        //private void Repository_GetPeopleCompleted(object sender, GetPeopleCompletedEventArgs e)
+        //private void Reader_GetPeopleCompleted(object sender, GetPeopleCompletedEventArgs e)
         //{
         //    PersonListBox.ItemsSource = e.Result;
         //}
