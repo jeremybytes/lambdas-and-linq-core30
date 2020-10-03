@@ -153,14 +153,14 @@ namespace PeopleViewer
 
         public void RefreshData()
         {
-            var repository = new PeopleReader();
-            repository.GetPeopleCompleted += (s, e) =>
+            var reader = new PeopleReader();
+            reader.GetPeopleCompleted += (s, e) =>
             {
                 cachedPeople = e.Result;
                 ResetFilters();
                 UpdateFilterAndSort();
             };
-            repository.GetPeopleAsync();
+            reader.GetPeopleAsync();
         }
 
         private void ResetFilters()
